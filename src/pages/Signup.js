@@ -1,75 +1,78 @@
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { useSignup } from '../hooks/useSignup';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signupSchema } from '../utils/validateSignup';
+import { Input } from '../components/Input';
 
 export default function Signup() {
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
-   const [displayName, setDisplayName] = useState('');
    const [thumbnail, setThumbnail] = useState(null);
    const [thumbnailError, setThumbnailError] = useState(null);
    const { signup, isPending, error } = useSignup();
 
-   const handleSubmit = (e) => {
-      e.preventDefault();
+   const { register, handleSubmit, formState: { errors } } = useForm({
+      resolver: yupResolver(signupSchema),
+      mode: "onBlur"
+   });
+
+   const submitForm = ({ email, password, displayName }) => {
       signup(email, password, displayName, thumbnail);
-   }
+   };
 
    const handleFileChange = (e) => {
       setThumbnail(null);
       let selected = e.target.files[0];
-      console.log(selected);
 
       if (!selected) {
-         setThumbnailError("Please select a file.");
+         setThumbnailError("Please select a file");
          return;
       }
       if (!selected.type.includes('image')) {
-         setThumbnailError("Selected file must be an image.");
+         setThumbnailError("Selected file must be an image");
          return;
       }
       if (selected.size > 100000) {
-         setThumbnailError("Image file size must be less than 100kb.");
+         setThumbnailError("Image file size must be less than 100kb");
          return;
       }
 
       setThumbnailError(null);
       setThumbnail(selected);
-      console.log("thumbnail updated.");
    }
 
    return (
       <>
-         <form className="auth-form" onSubmit={handleSubmit}>
+         <form className="auth-form" onSubmit={handleSubmit(submitForm)}>
             <h2>Sign up</h2>
+            <Input
+               value="email"
+               label="Email:"
+               type="text"
+               register={register}
+               error={errors.email}
+            />
+            <Input
+               value="displayName"
+               label="Display name:"
+               type="text"
+               register={register}
+               error={errors.displayName} />
+            <Input
+               value="password"
+               label="Password:"
+               type="password"
+               register={register}
+               error={errors.password} />
+            <Input
+               value="passwordConfirm"
+               label="Password confirmation:"
+               type="password"
+               register={register}
+               error={errors.passwordConfirm} />
             <label>
-               <span>Email:</span>
-               <input
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-               />
-            </label>
-            <label>
-               <span>Password:</span>
-               <input
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-               />
-            </label>
-            <label>
-               <span>Display name:</span>
-               <input
-                  type="text"
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  value={displayName}
-               />
-            </label>
-            <label>
-               <span>Profile thumbnail:</span>
+               <span>Profile thumbnail: (optional)</span>
                <input
                   type="file"
                   onChange={handleFileChange}

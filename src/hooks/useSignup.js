@@ -12,7 +12,6 @@ export const useSignup = () => {
    const { dispatch } = useAuthContext();
 
    const signup = async (email, password, displayName, thumbnail) => {
-      console.log("nail", thumbnail);
       setError(null);
       setIsPending(true);
 
@@ -24,19 +23,24 @@ export const useSignup = () => {
          }
 
          // upload user thumbnail photo
-         const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
-         const storageRef = ref(storage, uploadPath);
-         await uploadBytes(storageRef, thumbnail);
-         
-         const imgUrl = await getDownloadURL(storageRef);
-         updateProfile(res.user, { displayName, photoURL: imgUrl });
-         
-         // create a user document
-         const docRef = doc(db, "users", res.user.uid);
-         await setDoc(docRef, {
-            displayName,
-            photoURL: imgUrl
-         });
+         if (thumbnail) {
+            const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
+            const storageRef = ref(storage, uploadPath);
+            await uploadBytes(storageRef, thumbnail);
+
+            const imgUrl = await getDownloadURL(storageRef);
+            updateProfile(res.user, { displayName, photoURL: imgUrl });
+
+            // create a user document
+            const docRef = doc(db, "users", res.user.uid);
+            await setDoc(docRef, {
+               displayName,
+               photoURL: imgUrl
+            });
+         }
+         else {
+            updateProfile(res.user, { displayName });
+         }
 
          dispatch({ type: "LOGIN", payload: res.user });
 
@@ -46,7 +50,7 @@ export const useSignup = () => {
          }
       }
       catch (err) {
-         console.log(err.message);
+         console.error(err.message);
          setError(err.message);
          setIsPending(false);
       }

@@ -37,7 +37,7 @@ export function Dropzone({ name }) {
 
    const thumbs = files.map(file => (
       <div className='thumb' key={file.name}>
-         <div className='thumbInner'>
+         <div className='thumbinner'>
             <img
                src={file.preview}
                className="img"
@@ -66,7 +66,7 @@ export function Dropzone({ name }) {
                   <p>(avatar is optional)</p>
                </div>
             </section>
-            <aside className="thumbsContainer">
+            <aside className="thumbscontainer">
                {thumbs}
             </aside>
             {error && <p className='error'>{error}</p>}

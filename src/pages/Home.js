@@ -4,7 +4,7 @@ import { useLogout } from '../hooks/useLogout';
 export default function Home() {
    const { user } = useAuthContext();
    const { logout } = useLogout();
-   console.log(user.photoURL)
+
    return (
       <div className="home">
          <h2>Dzień dobry, Kierowniku złoty!</h2>

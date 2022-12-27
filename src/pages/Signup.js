@@ -1,11 +1,10 @@
-import { Typography } from '@mui/material';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSignup } from '../hooks/useSignup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from '../utils/validateSignup';
 import { Input } from '../components/Input';
+import { LinkToLoginPage } from '../components/LinksToPages';
 
 export default function Signup() {
    const [thumbnail, setThumbnail] = useState(null);
@@ -83,11 +82,7 @@ export default function Signup() {
             {isPending && <button disabled>Loading</button>}
             {error && <div className="error">{error}</div>}
          </form>
-         <div className="below-container">
-            <Typography sx={{ textAlign: 'center' }}>
-               Have an account? <Link to="/login">Login</Link>
-            </Typography>
-         </div>
       </>
    );
+      <LinkToLoginPage />
 }

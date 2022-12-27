@@ -7,6 +7,5 @@ export const loginSchema = yup.object().shape({
       .required("Required"),
    password: yup
       .string()
-      .min(5, "5 characters or more")
       .required("Required")
 });

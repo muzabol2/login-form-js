@@ -12,7 +12,7 @@ export const signupSchema = yup.object().shape({
       .required("Required"),
    password: yup
       .string()
-      .min(5, "5 characters or more")
+      .min(6, "6 characters or more")
       .required("Required"),
    passwordConfirm: yup
       .string()

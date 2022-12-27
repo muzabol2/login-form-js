@@ -1,13 +1,10 @@
-import { useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from '../hooks/useLogout';
 
 export default function Home() {
    const { user } = useAuthContext();
    const { logout } = useLogout();
-
-   useEffect(() => { }, [user.photoURL, user.displayName])
-
+   console.log(user.photoURL)
    return (
       <div className="home">
          <h2>Dzień dobry, Kierowniku złoty!</h2>

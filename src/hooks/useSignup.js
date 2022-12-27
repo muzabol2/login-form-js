@@ -22,24 +22,20 @@ export const useSignup = () => {
             throw new Error("Could not complate signup.");
          }
 
-         // upload user thumbnail photo
+         const docRef = doc(db, "users", res.user.uid);
+
          if (thumbnail) {
             const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
             const storageRef = ref(storage, uploadPath);
             await uploadBytes(storageRef, thumbnail);
 
-            const imgUrl = await getDownloadURL(storageRef);
-            updateProfile(res.user, { displayName, photoURL: imgUrl });
-
-            // create a user document
-            const docRef = doc(db, "users", res.user.uid);
-            await setDoc(docRef, {
-               displayName,
-               photoURL: imgUrl
-            });
+            const photoURL = await getDownloadURL(storageRef);
+            await updateProfile(res.user, { displayName, photoURL });
+            await setDoc(docRef, { displayName, photoURL });
          }
          else {
-            updateProfile(res.user, { displayName });
+            await updateProfile(res.user, { displayName });
+            await setDoc(docRef, { displayName });
          }
 
          dispatch({ type: "LOGIN", payload: res.user });

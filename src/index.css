@@ -1,11 +1,11 @@
 /* variables */
 :root {
-   --heading-color: #444;
+   --input-bg: #f5f8ff;
+   --txt-second-color: #ccc;
    --text-color: #999;
-   --primary-color: #8d69f1;
-   --highlight-color: #d13267;
+   --primary-color: #4267b2;
    --bg-color: #f4f4f4;
- }
+}
  
 body {
    margin: 0;
@@ -41,7 +41,6 @@ ul {
    list-style-type: none;
 }
 
-/* layout */
 .page-title {
    font-size: 1em;
    color: var(--heading-color);
@@ -56,17 +55,13 @@ button {
    cursor: pointer;
    font-size: 1em;
    border: 1px solid var(--primary-color);
-   margin-top: 24px;
+   width: 310px;
+   height: 50px;
 }
 
 button:hover {
    color: #fff;
    background-color: var(--primary-color);
-}
-
-label {
-   display: block;
-   margin-top: 24px;
 }
 
 label span {

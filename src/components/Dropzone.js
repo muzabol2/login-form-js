@@ -17,7 +17,6 @@ export function Dropzone({ name }) {
       maxSize: 100000,
       maxFiles: 1,
       onDrop: (acceptedFiles, fileRejections) => {
-         console.log("acceptedFiles", acceptedFiles[0]);
          setValue(name, acceptedFiles[0]);
          setFiles(acceptedFiles.map(file => Object.assign(file, {
             preview: URL.createObjectURL(file)

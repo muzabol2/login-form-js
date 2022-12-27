@@ -1,88 +1,54 @@
-import { useState } from 'react';
 import { useSignup } from '../hooks/useSignup';
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from '../utils/validateSignup';
 import { Input } from '../components/Input';
 import { LinkToLoginPage } from '../components/LinksToPages';
+import { Grid } from '@mui/material';
+import { Dropzone } from '../components/Dropzone';
 
 export default function Signup() {
-   const [thumbnail, setThumbnail] = useState(null);
-   const [thumbnailError, setThumbnailError] = useState(null);
    const { signup, isPending, error } = useSignup();
 
-   const { register, handleSubmit, formState: { errors } } = useForm({
+   const submitForm = ({ email, password, displayName, thumbnail }) => {
+      signup(email, password, displayName, thumbnail);
+   };
+
+   const signupList = [
+      { value: "email", label: "Email:", type: "text" },
+      { value: "displayName", label: "Display name:", type: "text" },
+      { value: "password", label: "Password:", type: "password" },
+      { value: "passwordConfirm", label: "Password confirmation:", type: "password" }
+   ];
+
+   const formMethods = useForm({
       resolver: yupResolver(signupSchema),
       mode: "onBlur"
    });
 
-   const submitForm = ({ email, password, displayName }) => {
-      signup(email, password, displayName, thumbnail);
-   };
+   const { handleSubmit } = formMethods;
 
-   const handleFileChange = (e) => {
-      setThumbnail(null);
-      let selected = e.target.files[0];
-
-      if (!selected) {
-         setThumbnailError("Please select a file");
-         return;
-      }
-      if (!selected.type.includes('image')) {
-         setThumbnailError("Selected file must be an image");
-         return;
-      }
-      if (selected.size > 100000) {
-         setThumbnailError("Image file size must be less than 100kb");
-         return;
-      }
-
-      setThumbnailError(null);
-      setThumbnail(selected);
-   }
-
-   return (
-      <>
+   return (<>
+      <FormProvider {...formMethods}>
          <form className="auth-form" onSubmit={handleSubmit(submitForm)}>
-            <h2>Sign up</h2>
-            <Input
-               value="email"
-               label="Email:"
-               type="text"
-               register={register}
-               error={errors.email}
-            />
-            <Input
-               value="displayName"
-               label="Display name:"
-               type="text"
-               register={register}
-               error={errors.displayName} />
-            <Input
-               value="password"
-               label="Password:"
-               type="password"
-               register={register}
-               error={errors.password} />
-            <Input
-               value="passwordConfirm"
-               label="Password confirmation:"
-               type="password"
-               register={register}
-               error={errors.passwordConfirm} />
-            <label>
-               <span>Profile thumbnail: (optional)</span>
-               <input
-                  type="file"
-                  onChange={handleFileChange}
-               />
-               {thumbnailError && <div className="error">{thumbnailError}</div>}
-            </label>
-            {!isPending && <button>Sign up</button>}
-            {isPending && <button disabled>Loading</button>}
-            {error && <div className="error">{error}</div>}
+            <Grid container gap={2} justifyContent="center">
+               <h2>Sign up</h2>
+               {signupList.map(({ value, label, type }) =>
+                  <Input
+                     key={value}
+                     value={value}
+                     label={label}
+                     type={type} />
+               )}
+               <Grid item>
+                  <Dropzone name="thumbnail" />
+               </Grid>
+               {!isPending && <button type="submit">Sign up</button>}
+               {isPending && <button disabled>Loading</button>}
+               {error && <div className="error">{error}</div>}
+            </Grid>
          </form>
-      </>
-   );
+      </FormProvider>
       <LinkToLoginPage />
+   </>);
 }

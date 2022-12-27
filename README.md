@@ -16,8 +16,12 @@ Application allows you to:
 * log in
 
 ## Deployment
-
+[>> HERE <<](https://login-form-js-e8ec6.web.app/login)
 ## Screenshots
+ Signup |  Login
+:-------------------------:|:-------------------------:
+![screenshot](https://user-images.githubusercontent.com/109333068/209648003-2056feb7-e4b8-40e0-ae95-5425621e7546.png) | ![obraz](https://user-images.githubusercontent.com/109333068/209648264-19f34473-9817-4c30-804c-d7b523ed828a.png)
+
 
 ## Technologies
 
@@ -30,6 +34,7 @@ Libraries:
 * material-ui
 * react-router-dom
 * react-hook-form
+* react-dropzone
 * yup
 
 ## Setup
@@ -44,4 +49,4 @@ npm run start
 You will need to change .env.sample file. You need to go to firebase website and create a new project there.
 
 ## Status
-Work in progress.
+Finished

@@ -56,7 +56,6 @@ export function Dropzone({ name }) {
       <Controller
          control={control}
          name={name}
-         defaultValue={[]}
          render={() => (<>
             <section className="drop-file-input">
                <div {...getRootProps({ className: 'drop-file-input__label' })}>
